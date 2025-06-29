@@ -7,7 +7,7 @@ namespace DataAccess.IRepositories
     public interface IUserRepository : IBaseRepository<User>
     {
         Task<User> GetUserWithTodosAsync(string userId);
-        Task<IEnumerable<User>> GetUsersByRoleAsync(UserRole role);
+        Task<IEnumerable<User>> GetUsersByRoleAsync(string role);
         Task<int> GetUsersCountAsync();
         Task<bool> IsEmailUniqueAsync(string email);
     }

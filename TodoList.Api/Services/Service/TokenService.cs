@@ -30,16 +30,20 @@ namespace DataAccess.Services
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public async Task<string> GenerateTokenAsync(User user)
+        public async Task<string> GenerateTokenAsync(User user,IList<string> rols)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
+
+            foreach (var item in rols)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item));
+            }
 
             var userClaims = await _userManager.GetClaimsAsync(user);
             claims.AddRange(userClaims);
@@ -112,9 +116,9 @@ namespace DataAccess.Services
             {
                 throw new SecurityTokenException("Invalid refresh token");
             }
-
+            var rols = await _userManager.GetRolesAsync(user);
             // Generate new token
-            var newToken = await GenerateTokenAsync(user);
+            var newToken = await GenerateTokenAsync(user,rols);
             var newRefreshToken = await GenerateRefreshTokenAsync();
 
             // Revoke old refresh token
@@ -139,7 +143,7 @@ namespace DataAccess.Services
                 Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FullName,
-                Role = user.Role,
+                Role = rols,
                 Token = newToken,
                 TokenExpiration = DateTime.UtcNow.AddMinutes(
                     _configuration.GetValue<double>("JwtSettings:TokenExpiryMinutes")),
@@ -161,5 +165,6 @@ namespace DataAccess.Services
             _context.RefreshTokens.UpdateRange(refreshTokens);
             await _context.SaveChangesAsync();
         }
+     
     }
 }

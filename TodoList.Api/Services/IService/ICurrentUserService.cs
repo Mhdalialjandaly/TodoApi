@@ -7,10 +7,8 @@ namespace DataAccess.Services
     {
         string UserId { get; }
         string Email { get; }
-        UserRole Role { get; }
+        string Role { get; }
         Task<User> GetCurrentUserAsync();
-        Task<bool> IsInRoleAsync(UserRole role);
-        Task<bool> IsOwnerAsync();
-        Task<bool> IsGuestAsync();
+        Task<bool> IsInRoleAsync(string role);      
     }
 }

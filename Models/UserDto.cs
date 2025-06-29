@@ -6,7 +6,7 @@ namespace Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public UserRole Role { get; set; }
+        public string Role { get; set; }
         public virtual ICollection<TodoItemDto> TodoItems { get; set; }
     }
 }

@@ -20,23 +20,12 @@ namespace DataAccess.Services
 
         public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         public string Email => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
-        public UserRole Role
+        public string Role
         {
             get
             {
-                var roleValue = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);
-
-                if (string.IsNullOrEmpty(roleValue))
-                    return UserRole.Guest; 
-
-                try
-                {
-                    return Enum.Parse<UserRole>(roleValue);
-                }
-                catch
-                {
-                    return UserRole.Guest; 
-                }
+                var roleValue = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);               
+                    return roleValue; 
             }
         }
 
@@ -48,23 +37,14 @@ namespace DataAccess.Services
             return await _userManager.FindByIdAsync(UserId);
         }
 
-        public async Task<bool> IsInRoleAsync(UserRole role)
+        public async Task<bool> IsInRoleAsync(string role)
         {
             var user = await GetCurrentUserAsync();
             if (user == null)
                 return false;
 
-            return user.Role == role;
+            return await IsInRoleAsync(role);
         }
 
-        public async Task<bool> IsOwnerAsync()
-        {
-            return await IsInRoleAsync(UserRole.Owner);
-        }
-
-        public async Task<bool> IsGuestAsync()
-        {
-            return await IsInRoleAsync(UserRole.Guest);
-        }
     }
 }

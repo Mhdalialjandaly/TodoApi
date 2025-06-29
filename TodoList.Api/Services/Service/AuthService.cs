@@ -15,8 +15,11 @@ namespace TodoList.Api.Services.Service
         private readonly ITokenService _tokenService;
         private readonly SignInManager<User> _signInManager;
         private readonly ApiDbContext _context;
+
         public AuthService(
             UserManager<User> userManager,
+            ApiDbContext context,
+            SignInManager<User> signInManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
             ITokenService tokenService) {
@@ -47,12 +50,12 @@ namespace TodoList.Api.Services.Service
             if (!result.Succeeded)
                 throw new BadRequestException(result.Errors.First().Description);
 
-            await _userManager.AddToRoleAsync(user, existingRole.Name);
-
+             await _userManager.AddToRoleAsync(user, existingRole.Name);
+            var x = new List<string> { existingRole.Name};
             return new AuthResponse {
                 Id = user.Id,
                 Email = user.Email,
-                Token = await _tokenService.GenerateTokenAsync(user)
+                Token = await _tokenService.GenerateTokenAsync(user, x)
             };
         }
 
@@ -60,8 +63,8 @@ namespace TodoList.Api.Services.Service
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
                 throw new BadRequestException("Invalid credentials");
-
-            var token = await _tokenService.GenerateTokenAsync(user);
+            var userRole = await _userManager.GetRolesAsync(user);
+            var token = await _tokenService.GenerateTokenAsync(user,userRole);
             var refreshToken = await _tokenService.GenerateRefreshTokenAsync();
             await _signInManager.PasswordSignInAsync(user, request.Password,request.RememberMe, lockoutOnFailure: false);
             // Save refresh token to database
@@ -76,11 +79,13 @@ namespace TodoList.Api.Services.Service
             await _context.RefreshTokens.AddAsync(refreshTokenEntity);
             await _context.SaveChangesAsync();
 
+           
+
             return new AuthResponse {
                 Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FullName,
-                Role = user.Role,
+                Role = userRole,
                 Token = token,
                 TokenExpiration = DateTime.UtcNow.AddMinutes(
                     _configuration.GetValue<double>("JwtSettings:TokenExpiryMinutes")),
@@ -92,12 +97,12 @@ namespace TodoList.Api.Services.Service
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 throw new NotFoundException("User not found");
-
+            var userRole = await _userManager.GetRolesAsync(user);
             return new UserResponse {
                 Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FullName,
-                Role = user.Role
+                Role = userRole,
             };
         }
     }
