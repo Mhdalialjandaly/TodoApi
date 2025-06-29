@@ -10,7 +10,7 @@ namespace DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             // Uncomment the next line only when adding a new migration
-            optionsBuilder.UseSqlServer("");
+            //optionsBuilder.UseSqlServer("");
         }
     }
 }
