@@ -11,6 +11,7 @@ using System.Text;
 using Jose;
 using TodoList.Api.Services.Service;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TodoList.Api.DependeincyInjuction
 {
@@ -45,7 +46,6 @@ namespace TodoList.Api.DependeincyInjuction
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
-
 
             var jwtSettings = configuration.GetSection("JwtSettings");
             services.Configure<JwtSettings>(jwtSettings);
