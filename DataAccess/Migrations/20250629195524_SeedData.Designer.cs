@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20250629185546_Initial")]
-    partial class Initial
+    [Migration("20250629195524_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,6 +230,26 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a9cbee59-a4bf-485b-a215-fc7835066d93",
+                            Email = "Admin@mail.com",
+                            EmailConfirmed = false,
+                            FullName = "Administrator",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@MAIL.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAECL8N27v+k5F7HvlD8UoRFK7Ug2tfXYOOkCSySoYu6l61y4wFD8aVvUY/YBar/jGnw==",
+                            PhoneNumberConfirmed = false,
+                            Role = 0,
+                            SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -257,6 +277,20 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "149b2f7f-8358-4f68-be8e-e17eddb9f025",
+                            Name = "Owner",
+                            NormalizedName = "OWNER"
+                        },
+                        new
+                        {
+                            Id = "169b2f7f-8358-4f68-be8e-e17eddb9f027",
+                            Name = "Guest",
+                            NormalizedName = "GUEST"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -344,6 +378,13 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
+                            RoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

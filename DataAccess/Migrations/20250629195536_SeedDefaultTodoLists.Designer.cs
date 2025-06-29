@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20250629185601_SeedData")]
-    partial class SeedData
+    [Migration("20250629195536_SeedDefaultTodoLists")]
+    partial class SeedDefaultTodoLists
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,26 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Color = "Red",
+                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            LastModifiedBy = "",
+                            Name = "Category A"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Color = "Blue",
+                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            LastModifiedBy = "",
+                            Name = "Category B"
+                        });
                 });
 
             modelBuilder.Entity("DataAccess.Entities.RefreshToken", b =>
@@ -158,6 +178,50 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("TodoItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Description = "Todo #1 Description",
+                            IsCompleted = false,
+                            LastModifiedBy = "",
+                            Priority = 3,
+                            Title = "Todo #1",
+                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Description = "Todo #2 Description",
+                            IsCompleted = false,
+                            LastModifiedBy = "",
+                            Priority = 0,
+                            Title = "Todo #2",
+                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Description = "Todo #3 Description",
+                            IsCompleted = false,
+                            LastModifiedBy = "",
+                            Priority = 1,
+                            Title = "Todo #3",
+                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
+                        });
                 });
 
             modelBuilder.Entity("DataAccess.Entities.User", b =>
@@ -243,7 +307,7 @@ namespace DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELUouv/UaJM82cXYMqQsDICtCdHodYaREoaZpwwSerlGDWTW2qA1sx0NZGGe3CRvlw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGgVpaiWy52ATqd96Ht1jw2hIiK1O13UC7Gso/22+u7MPsrrUBq8YDSnVzMrB5/8ZA==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
                             SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
@@ -282,12 +346,6 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = "149b2f7f-8358-4f68-be8e-e17eddb9f025",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "159b2f7f-8358-4f68-be8e-e17eddb9f026",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },

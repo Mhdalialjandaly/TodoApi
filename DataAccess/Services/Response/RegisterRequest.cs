@@ -27,7 +27,7 @@ namespace DataAccess.Services.Response
 
         public string UserName => FirstName + "" + LastName;
         [Required]
-        public UserRole Role { get; set; } = UserRole.Guest; 
+        public string Role { get; set; }
 
         public string PhoneNumber { get; set; }
     }
