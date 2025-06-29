@@ -1,5 +1,6 @@
 using DataAccess;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using TodoList.Api.DependeincyInjuction;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,24 +9,19 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 builder.Services.InfrastructureServices(builder.Configuration);
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
-{
-    await SystemDbInitializer.Initialize(scope.ServiceProvider);
+using (var scope = app.Services.CreateScope()) {
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
+    dbContext.Database.Migrate();
 }
 
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseDeveloperExceptionPage();
-}
-else
-{
+} else {
     app.UseExceptionHandler("/error");
 }
 
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
+app.UseExceptionHandler(errorApp => {
+    errorApp.Run(async context => {
         context.Response.StatusCode = 500;
         context.Response.ContentType = "text/html";
 
@@ -35,8 +31,7 @@ app.UseExceptionHandler(errorApp =>
         var exceptionHandlerPathFeature =
             context.Features.Get<IExceptionHandlerPathFeature>();
 
-        if (exceptionHandlerPathFeature?.Error != null)
-        {
+        if (exceptionHandlerPathFeature?.Error != null) {
             await context.Response.WriteAsync(
                 $"Error: {exceptionHandlerPathFeature.Error.Message}<br>\r\n");
             await context.Response.WriteAsync(

@@ -4,24 +4,13 @@ namespace DataAccess
 {
     public partial class ApiDbContext
     {
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
-        {
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder) {
             modelBuilder.SeedData();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {         
-                if (string.IsNullOrWhiteSpace(ConnectionHandler.ConnectionString))
-                    ConnectionHandler.ConnectionString =
-                @"Server=.;Database=ApiDb;User Id=sa;Password=aaaaa12345;TrustServerCertificate=true;";
-
-                optionsBuilder.UseSqlServer(ConnectionHandler.ConnectionString);
-            
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            // Uncomment the next line only when adding a new migration
+            //optionsBuilder.UseSqlServer("");
         }
-    }
-
-    public static class ConnectionHandler
-    {
-        public static string? ConnectionString { get; set; }
     }
 }
