@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250629195508_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,26 +64,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Color = "Red",
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            LastModifiedBy = "",
-                            Name = "Category A"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Color = "Blue",
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            LastModifiedBy = "",
-                            Name = "Category B"
-                        });
                 });
 
             modelBuilder.Entity("DataAccess.Entities.RefreshToken", b =>
@@ -175,50 +158,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("TodoItems");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            Description = "Todo #1 Description",
-                            IsCompleted = false,
-                            LastModifiedBy = "",
-                            Priority = 3,
-                            Title = "Todo #1",
-                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            Description = "Todo #2 Description",
-                            IsCompleted = false,
-                            LastModifiedBy = "",
-                            Priority = 0,
-                            Title = "Todo #2",
-                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            Description = "Todo #3 Description",
-                            IsCompleted = false,
-                            LastModifiedBy = "",
-                            Priority = 1,
-                            Title = "Todo #3",
-                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
-                        });
                 });
 
             modelBuilder.Entity("DataAccess.Entities.User", b =>
@@ -291,26 +230,6 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9cbee59-a4bf-485b-a215-fc7835066d93",
-                            Email = "Admin@mail.com",
-                            EmailConfirmed = false,
-                            FullName = "Administrator",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@MAIL.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAECiwIIOeVrBpbKgzsyS73Ne1iwgmeLu/6XZDgzessDtwn+yp7W2fnV6O3Qi/+E6iMQ==",
-                            PhoneNumberConfirmed = false,
-                            Role = 0,
-                            SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -338,20 +257,6 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "149b2f7f-8358-4f68-be8e-e17eddb9f025",
-                            Name = "Owner",
-                            NormalizedName = "OWNER"
-                        },
-                        new
-                        {
-                            Id = "169b2f7f-8358-4f68-be8e-e17eddb9f027",
-                            Name = "Guest",
-                            NormalizedName = "GUEST"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -439,13 +344,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
-                            RoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
