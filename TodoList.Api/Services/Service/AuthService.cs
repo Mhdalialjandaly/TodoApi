@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+﻿using DataAccess;
 using DataAccess.Entities;
+using DataAccess.Services;
 using DataAccess.Services.Response;
+using Microsoft.AspNetCore.Identity;
 using SendGrid.Helpers.Errors.Model;
 
-namespace DataAccess.Services
+namespace TodoList.Api.Services.Service
 {
     public class AuthService : IAuthService
     {
@@ -31,16 +32,21 @@ namespace DataAccess.Services
             if (existingUser != null)
                 throw new BadRequestException("Email already in use");
 
+            var existingRole = await _roleManager.FindByNameAsync(request.Role);
+            if (existingRole == null)
+                throw new BadRequestException("Role does not exist");
+
             var user = new User {
                 Email = request.Email,
                 UserName = request.UserName,
-                FullName = request.FirstName,
-                Role = request.Role
+                FullName = request.FirstName
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
                 throw new BadRequestException(result.Errors.First().Description);
+
+            await _userManager.AddToRoleAsync(user, existingRole.Name);
 
             return new AuthResponse {
                 Id = user.Id,
@@ -50,20 +56,6 @@ namespace DataAccess.Services
         }
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request) {
-            var role = new IdentityRole("Admin");
-            var result = await _roleManager.CreateAsync(role);
-
-            var usr = await _userManager.CreateAsync(new User() {
-                FullName = "Administrator",
-                UserName = "Admin",
-                Email = "Admin@mail.com",
-            });
-            if (usr.Succeeded) {
-                var cusr = await _userManager.FindByNameAsync("Admin");
-                await _userManager.AddPasswordAsync(cusr, "Admin@123");
-            }
-
-
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
                 throw new BadRequestException("Invalid credentials");

@@ -7,19 +7,12 @@ namespace DataAccess
     public static class SystemDbInitializer
     {
         public static void SeedData(this ModelBuilder modelBuilder) {
-            var adminRoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025";
+            var ownerRoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025";
 
             modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole> {
                     new IdentityRole
                    {
-                       Id = adminRoleId,
-                       Name = "Admin",
-                       NormalizedName = "ADMIN",
-                       ConcurrencyStamp = null
-                   },
-                    new IdentityRole
-                   {
-                       Id = "159b2f7f-8358-4f68-be8e-e17eddb9f026",
+                       Id = ownerRoleId,
                        Name = "Owner",
                        NormalizedName = "OWNER",
                        ConcurrencyStamp = null
@@ -38,7 +31,7 @@ namespace DataAccess
             modelBuilder.Entity<User>().HasData(adminUser);
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string> {
                 UserId = adminUser.Id,
-                RoleId = adminRoleId
+                RoleId = ownerRoleId
             });
         }
 
