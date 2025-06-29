@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using DataAccess.Entities;
 using DataAccess.Services.Response;
 using SendGrid.Helpers.Errors.Model;
@@ -11,17 +10,20 @@ namespace DataAccess.Services
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
+        private readonly SignInManager<User> _signInManager;
         private readonly ApiDbContext _context;
         public AuthService(
-            ApiDbContext context,
             UserManager<User> userManager,
             IConfiguration configuration,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            ApiDbContext context,
+            SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _configuration = configuration;
             _tokenService = tokenService;
             _context = context;
+            _signInManager = signInManager;
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
@@ -58,7 +60,7 @@ namespace DataAccess.Services
 
             var token = await _tokenService.GenerateTokenAsync(user);
             var refreshToken = await _tokenService.GenerateRefreshTokenAsync();
-
+            await _signInManager.PasswordSignInAsync(user, request.Password,request.RememberMe, lockoutOnFailure: false);
             // Save refresh token to database
             var refreshTokenEntity = new RefreshToken
             {

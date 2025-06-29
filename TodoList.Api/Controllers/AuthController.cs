@@ -1,5 +1,4 @@
-﻿using DataAccess.Entities;
-using DataAccess.Services;
+﻿using DataAccess.Services;
 using DataAccess.Services.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -11,7 +11,7 @@ namespace DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {         
-                if (string.IsNullOrWhiteSpace(ConnectionHandler.ConnectionString))
+               if (string.IsNullOrWhiteSpace(ConnectionHandler.ConnectionString))
                     ConnectionHandler.ConnectionString =
                 @"Server=.;Database=ApiDb;User Id=sa;Password=aaaaa12345;TrustServerCertificate=true;";
 
