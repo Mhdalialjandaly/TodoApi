@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -238,15 +236,6 @@ namespace DataAccess.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { "1", 0, "6ea4b873-4a85-42bb-9e4d-26fda516aa35", "mahammaali89@gmail.com", true, "mahammad ali", false, null, null, null, "1", "0941390732", true, 0, "15a1ae07-4c2e-4ad5-8c6b-bee3ee4f78b3", false, "Ali" },
-                    { "2", 0, "37ffdce8-e175-4a91-b551-d07fb78b78a1", "mahammaali89@gmail.com", true, "mahammad ali", false, null, null, null, "2", "0941390732", true, 1, "c3b14d98-d8ed-4376-9201-5e91bae3413b", false, "Mahammad" }
                 });
 
             migrationBuilder.CreateIndex(

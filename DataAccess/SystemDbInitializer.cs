@@ -1,82 +1,63 @@
-﻿using Core.Enums;
-using DataAccess.Entities;
+﻿using DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Data;
 
 namespace DataAccess
 {
-     public static class SystemDbInitializer
+    public static class SystemDbInitializer
     {
-        public static async Task Initialize(IServiceProvider serviceProvider)
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+        public static void SeedData(this ModelBuilder modelBuilder) {
+            var adminRoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025";
 
-            // إنشاء الأدوار إذا لم تكن موجودة
-            string[] roleNames = { "Admin", "Owner","Guest"};
+            modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole> {
+                    new IdentityRole
+                   {
+                       Id = adminRoleId,
+                       Name = "Admin",
+                       NormalizedName = "ADMIN",
+                       ConcurrencyStamp = null
+                   },
+                    new IdentityRole
+                   {
+                       Id = "159b2f7f-8358-4f68-be8e-e17eddb9f026",
+                       Name = "Owner",
+                       NormalizedName = "OWNER",
+                       ConcurrencyStamp = null
+                   },
+                   new IdentityRole
+                   {
+                       Id = "169b2f7f-8358-4f68-be8e-e17eddb9f027",
+                       Name = "Guest",
+                       NormalizedName = "GUEST",
+                       ConcurrencyStamp = null
+                   }
+            });
 
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = await roleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    await roleManager.CreateAsync(new IdentityRole
-                    {
-                        Name = roleName,
-                        NormalizedName = roleName.ToUpper()
-                    });
-                }
-            }
 
-            // إنشاء مستخدم Admin إذا لم يكن موجوداً
-            var adminUser = await userManager.FindByEmailAsync("admin@example.com");
-            if (adminUser == null)
-            {
-                var admin = new User
-                {
-                    UserName = "admin@example.com",
-                    Email = "admin@example.com",
-                    FullName = "مدير النظام"
-                };
-
-                var createAdmin = await userManager.CreateAsync(admin, "Admin@12345");
-                if (createAdmin.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(admin, "Admin");
-                }
-            }
+            var adminUser = GetAdminUser();
+            modelBuilder.Entity<User>().HasData(adminUser);
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string> {
+                UserId = adminUser.Id,
+                RoleId = adminRoleId
+            });
         }
-        public static void SeedData(this ModelBuilder modelBuilder)
-        {
-            // modelBuilder.Entity<User>()
-            //    .HasData(new User
-            //    {
-            //        Id = "1",
-            //        UserName = "Ali",
-            //        PasswordHash = "1",
-            //        PhoneNumber = "0941390732",
-            //        PhoneNumberConfirmed = true,
-            //        Email = "mahammaali89@gmail.com",
-            //        EmailConfirmed = true,
-            //        FullName ="mahammad ali",
-            //        Role = UserRole.Owner,
-            //    });
-            //modelBuilder.Entity<User>()
-            //    .HasData(new User
-            //    {
-            //        Id = "2",
-            //        UserName = "Mahammad",
-            //        PasswordHash = "2",
-            //        PhoneNumber = "0941390732",
-            //        PhoneNumberConfirmed = true,
-            //        Email = "mahammaali89@gmail.com",
-            //        EmailConfirmed = true,
-            //        FullName = "mahammad ali",
-            //        Role = UserRole.Guest,
-            //    });
 
+        private static User GetAdminUser() {
+            var hasher = new PasswordHasher<User>();
+            var adminUser = new User {
+                Id = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
+                UserName = "Admin",
+                NormalizedUserName = "ADMIN",
+                Email = "Admin@mail.com",
+                NormalizedEmail = "ADMIN@MAIL.COM",
+                EmailConfirmed = false,
+                FullName = "Administrator",
+                SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
+                ConcurrencyStamp = "a9cbee59-a4bf-485b-a215-fc7835066d93",
+                LockoutEnabled = false
+            };
+            adminUser.PasswordHash = hasher.HashPassword(adminUser, "Admin@12345");
+            return adminUser;
         }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20250629115003_intial")]
-    partial class intial
+    [Migration("20250629185601_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,37 +234,21 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ea4b873-4a85-42bb-9e4d-26fda516aa35",
-                            Email = "mahammaali89@gmail.com",
-                            EmailConfirmed = true,
-                            FullName = "mahammad ali",
+                            ConcurrencyStamp = "a9cbee59-a4bf-485b-a215-fc7835066d93",
+                            Email = "Admin@mail.com",
+                            EmailConfirmed = false,
+                            FullName = "Administrator",
                             LockoutEnabled = false,
-                            PasswordHash = "1",
-                            PhoneNumber = "0941390732",
-                            PhoneNumberConfirmed = true,
+                            NormalizedEmail = "ADMIN@MAIL.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAELUouv/UaJM82cXYMqQsDICtCdHodYaREoaZpwwSerlGDWTW2qA1sx0NZGGe3CRvlw==",
+                            PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "15a1ae07-4c2e-4ad5-8c6b-bee3ee4f78b3",
+                            SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
                             TwoFactorEnabled = false,
-                            UserName = "Ali"
-                        },
-                        new
-                        {
-                            Id = "2",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "37ffdce8-e175-4a91-b551-d07fb78b78a1",
-                            Email = "mahammaali89@gmail.com",
-                            EmailConfirmed = true,
-                            FullName = "mahammad ali",
-                            LockoutEnabled = false,
-                            PasswordHash = "2",
-                            PhoneNumber = "0941390732",
-                            PhoneNumberConfirmed = true,
-                            Role = 1,
-                            SecurityStamp = "c3b14d98-d8ed-4376-9201-5e91bae3413b",
-                            TwoFactorEnabled = false,
-                            UserName = "Mahammad"
+                            UserName = "Admin"
                         });
                 });
 
@@ -293,6 +277,26 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "149b2f7f-8358-4f68-be8e-e17eddb9f025",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "159b2f7f-8358-4f68-be8e-e17eddb9f026",
+                            Name = "Owner",
+                            NormalizedName = "OWNER"
+                        },
+                        new
+                        {
+                            Id = "169b2f7f-8358-4f68-be8e-e17eddb9f027",
+                            Name = "Guest",
+                            NormalizedName = "GUEST"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -380,6 +384,13 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
+                            RoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

@@ -16,8 +16,7 @@ namespace TodoList.Api.DependeincyInjuction
 {
     public static class ServiceContainer
     {
-        public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration)
-        {
+        public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration) {
             var configuration1 = new MapperConfiguration(e =>
                e.AddProfiles(new List<Profile> {
                     new SystemMapping()
@@ -25,10 +24,8 @@ namespace TodoList.Api.DependeincyInjuction
             services.AddAutoMapper(typeof(Profile).Assembly);
             var mapper = configuration1.CreateMapper();
 
-
             // DbContext
-            services.AddDbContext<ApiDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApiDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default")));
 
             // Identity
             services.AddIdentity<User, IdentityRole>()
@@ -49,12 +46,11 @@ namespace TodoList.Api.DependeincyInjuction
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-           
+
             var jwtSettings = configuration.GetSection("JwtSettings");
             services.Configure<JwtSettings>(jwtSettings);
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
+            var tokenValidationParameters = new TokenValidationParameters {
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
