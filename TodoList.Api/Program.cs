@@ -71,12 +71,12 @@ app.UseExceptionHandler(errorApp => {
 app.MapControllers();
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthorization();
-if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment()) {
+app.UseSwagger();
+app.UseSwaggerUI();
+//}
 app.Run();
 return;
 

@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Admin@123
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - voc_private_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1433"]
+      interval: 180s
+      retries: 3
+      start_period: 180s
+      timeout: 180s
+  todolist.api:
+    image: ${DOCKER_REGISTRY-}todolistapi
+    build:
+        context: .
+        dockerfile: TodoList.Api/Dockerfile
+    ports:
+      - "53874:8080"
+    networks:
+      - voc_private_network
+    depends_on:
+      - sqlserver
+
+networks:
+  voc_private_network:
+    driver: bridge
+
+volumes:
+  sql_data:
