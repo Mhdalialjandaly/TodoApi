@@ -19,6 +19,5 @@ namespace DataAccess.Entities
         public string LastModifiedBy { get ; set ; }
         public DateTime? DeletedDate { get; set; }
         public string? DeletedBy { get; set; }
-        public DateTime UpdatedAt { get; internal set; }
     }
 }

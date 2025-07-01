@@ -49,6 +49,7 @@ namespace TodoList.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdTodo.Id }, createdTodo);
         }
 
+        [Authorize(Roles = "owner")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] TodoRequestModel todo) {
             var todoItem = _mapper.Map<TodoItemDto>(todo);
@@ -67,6 +68,7 @@ namespace TodoList.Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles ="owner")]
         [HttpPatch("{id}/toggle-complete")]
         public async Task<IActionResult> ToggleComplete(int id) {
             var userId = _currentUserService.UserId;
