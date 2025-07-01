@@ -35,9 +35,10 @@ namespace DataAccess.Repositories
                 .FirstOrDefaultAsync(c => c.Name == name);
         }
 
-        public Task<Category> GetCategoryByNameAsync(string name)
+        public async Task<Category> GetCategoryByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+                .FirstOrDefaultAsync(c => c.Name == name);
         }
 
         public async Task<IEnumerable<Category>> GetPopularCategoriesAsync(int count, string userId)
@@ -49,9 +50,11 @@ namespace DataAccess.Repositories
                 .ToListAsync();
         }
 
-        public Task<bool> HasTodosAsync(int categoryId)
+        public async Task<bool> HasTodosAsync(int categoryId)
         {
-            throw new NotImplementedException();
+            return await _context.Categories
+                .Where(c => c.Id == categoryId)
+                .AnyAsync(c => c.TodoItems.Any(t => !t.IsCompleted));
         }
     }
 }

@@ -3,7 +3,6 @@ using Core.Enums;
 using DataAccess.Entities;
 using DataAccess.IRepositories;
 using Models;
-using Models.Base;
 using SendGrid.Helpers.Errors.Model;
 
 namespace DataAccess.Services
@@ -29,10 +28,7 @@ namespace DataAccess.Services
         public async Task<IEnumerable<TodoItem>> GetAllAsync(string userId) {
             return await _todoRepository.GetByUserIdAsync(userId);
         }
-
-        public async Task<PagedResult<TodoItem>> GetAllAsync(string userId, int pageNumber, int pageSize, string searchTerm = null) {
-            return await _todoRepository.GetByUserIdAsync(userId, pageNumber, pageSize, searchTerm);
-        }
+        
 
         public async Task<TodoItem> CreateAsync(TodoItemDto todo) {
             var dbItem = _mapper.Map<TodoItem>(todo);

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Core.Enums;
-using DataAccess.Entities;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +27,9 @@ namespace TodoList.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(int pageNumber, int pageSize, string searchTerm = null) {
+        public async Task<IActionResult> GetAll() {
             var userId = _currentUserService.UserId;
-            var todos = await _todoService.GetAllAsync(userId, pageNumber, pageSize, searchTerm);
+            var todos = await _todoService.GetAllAsync(userId);
             return Ok(todos);
         }
 
