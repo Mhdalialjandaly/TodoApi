@@ -12,6 +12,9 @@ using Jose;
 using TodoList.Api.Services.Service;
 using AutoMapper;
 using TodoList.Api.RequestModel;
+using DataAccess.ValidatorModel;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 namespace TodoList.Api.DependeincyInjuction
 {
@@ -67,6 +70,10 @@ namespace TodoList.Api.DependeincyInjuction
 
             //  TokenService
             services.AddScoped<ITokenService, TokenService>();
+
+            //Validator Service
+            services.AddValidatorsFromAssemblyContaining<CreateCategoryDtoValidator>();
+            services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
             services.AddControllers();
             return services;
