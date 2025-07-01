@@ -71,6 +71,10 @@ dotnet restore
 # تطبيق الهجرات
 dotnet ef database update
 add-migration initial 
+ويجب اضافة معلومات الاتصال بال sql server  في الكلاس(ApiDbExtendedContext) الخاص بالاتصال بال sql server 
+
+// Uncomment the next line only when adding a new migration
+//optionsBuilder.UseSqlServer("Server=??,1433;Database=DBNam;User Id=UserName;Password=Passwordofuser;TrustServerCertificate=true;");
 
 # تشغيل التطبيق
 dotnet run
