@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20250629195536_SeedDefaultTodoLists")]
-    partial class SeedDefaultTodoLists
+    [Migration("20250701112351_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,14 +34,12 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Color")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeletedBy")
@@ -54,36 +52,14 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Color = "Red",
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            LastModifiedBy = "",
-                            Name = "Category A"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Color = "Blue",
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            LastModifiedBy = "",
-                            Name = "Category B"
-                        });
                 });
 
             modelBuilder.Entity("DataAccess.Entities.RefreshToken", b =>
@@ -104,11 +80,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Token")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -133,7 +107,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeletedBy")
@@ -143,7 +116,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsCompleted")
@@ -153,7 +125,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Priority")
@@ -168,7 +139,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -178,50 +148,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("TodoItems");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            Description = "Todo #1 Description",
-                            IsCompleted = false,
-                            LastModifiedBy = "",
-                            Priority = 3,
-                            Title = "Todo #1",
-                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            Description = "Todo #2 Description",
-                            IsCompleted = false,
-                            LastModifiedBy = "",
-                            Priority = 0,
-                            Title = "Todo #2",
-                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            Created = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            Description = "Todo #3 Description",
-                            IsCompleted = false,
-                            LastModifiedBy = "",
-                            Priority = 1,
-                            Title = "Todo #3",
-                            UpdatedAt = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8"
-                        });
                 });
 
             modelBuilder.Entity("DataAccess.Entities.User", b =>
@@ -244,7 +170,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -270,9 +195,6 @@ namespace DataAccess.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -294,26 +216,6 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9cbee59-a4bf-485b-a215-fc7835066d93",
-                            Email = "Admin@mail.com",
-                            EmailConfirmed = false,
-                            FullName = "Administrator",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@MAIL.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGgVpaiWy52ATqd96Ht1jw2hIiK1O13UC7Gso/22+u7MPsrrUBq8YDSnVzMrB5/8ZA==",
-                            PhoneNumberConfirmed = false,
-                            Role = 0,
-                            SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -341,20 +243,6 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "149b2f7f-8358-4f68-be8e-e17eddb9f025",
-                            Name = "Owner",
-                            NormalizedName = "OWNER"
-                        },
-                        new
-                        {
-                            Id = "169b2f7f-8358-4f68-be8e-e17eddb9f027",
-                            Name = "Guest",
-                            NormalizedName = "GUEST"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -442,13 +330,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
-                            RoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -474,9 +355,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -491,9 +370,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany("TodoItems")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 

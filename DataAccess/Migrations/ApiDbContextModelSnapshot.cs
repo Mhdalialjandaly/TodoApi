@@ -31,14 +31,12 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Color")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeletedBy")
@@ -51,11 +49,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -101,11 +97,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Token")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -130,7 +124,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeletedBy")
@@ -140,7 +133,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsCompleted")
@@ -150,7 +142,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Priority")
@@ -165,7 +156,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -241,7 +231,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -266,9 +255,6 @@ namespace DataAccess.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -297,19 +283,35 @@ namespace DataAccess.Migrations
                         {
                             Id = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9cbee59-a4bf-485b-a215-fc7835066d93",
+                            ConcurrencyStamp = "b21eda53-5ff1-46b0-89d9-6cb47141b269",
                             Email = "Admin@mail.com",
                             EmailConfirmed = false,
-                            FullName = "Administrator",
+                            FullName = "Admin",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAECiwIIOeVrBpbKgzsyS73Ne1iwgmeLu/6XZDgzessDtwn+yp7W2fnV6O3Qi/+E6iMQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEexTq8fPDtetT25vQ1kkwdLe8GcokWl2TZDe4TAOvcsmAxefXkFp3GI0klfheTgYw==",
                             PhoneNumberConfirmed = false,
-                            Role = 0,
-                            SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
+                            SecurityStamp = "99dfad27-65dc-40e0-8b05-bde7826025f0",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
+                        },
+                        new
+                        {
+                            Id = "61586e47-b125-4534-bba4-9bc6fd3dfbc8",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c82c62ca-9786-4894-9248-3535a660e191",
+                            Email = "Guest@mail.com",
+                            EmailConfirmed = false,
+                            FullName = "Guest",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "GUEST@MAIL.COM",
+                            NormalizedUserName = "GUEST",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHS63mZhi9JVOjnK5aA8CBPCKWDhb9dK6r9GQNX4v4b8OxaqF0hn9OhvIpJmPiBXwA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "465d47d5-4ce3-4a09-985e-b07d263b7aba",
+                            TwoFactorEnabled = false,
+                            UserName = "Guest"
                         });
                 });
 
@@ -445,6 +447,11 @@ namespace DataAccess.Migrations
                         {
                             UserId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8",
                             RoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025"
+                        },
+                        new
+                        {
+                            UserId = "61586e47-b125-4534-bba4-9bc6fd3dfbc8",
+                            RoleId = "169b2f7f-8358-4f68-be8e-e17eddb9f027"
                         });
                 });
 
@@ -471,9 +478,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -488,9 +493,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany("TodoItems")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 

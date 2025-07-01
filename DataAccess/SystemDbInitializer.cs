@@ -8,6 +8,7 @@ namespace DataAccess
     public static class SystemDbInitializer
     {
         private static readonly string UserAdminId = "51586e47-b125-4534-bba4-9bc6fd3dfbc8";
+        private static readonly string UserGuestId = "61586e47-b125-4534-bba4-9bc6fd3dfbc8";
 
 
         public static void SeedData(this ModelBuilder modelBuilder) {
@@ -18,6 +19,7 @@ namespace DataAccess
 
         private static void SeedUsers(ModelBuilder modelBuilder) {
             var ownerRoleId = "149b2f7f-8358-4f68-be8e-e17eddb9f025";
+            var guestRoleId = "169b2f7f-8358-4f68-be8e-e17eddb9f027";
 
             modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole> {
                 new IdentityRole
@@ -29,7 +31,7 @@ namespace DataAccess
                 },
                 new IdentityRole
                 {
-                    Id = "169b2f7f-8358-4f68-be8e-e17eddb9f027",
+                    Id = guestRoleId,
                     Name = "Guest",
                     NormalizedName = "GUEST",
                     ConcurrencyStamp = null
@@ -37,11 +39,18 @@ namespace DataAccess
             });
 
 
-            var adminUser = GetAdminUser();
+            var adminUser = GenerateUser(UserAdminId, "Admin", "Admin@mail.com", "Owner", "Admin@12345");
             modelBuilder.Entity<User>().HasData(adminUser);
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string> {
                 UserId = adminUser.Id,
                 RoleId = ownerRoleId
+            });
+
+            var guestUser = GenerateUser(UserGuestId, "Guest", "Guest@mail.com", "Guest", "Guest@12345");
+            modelBuilder.Entity<User>().HasData(guestUser);
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string> {
+                UserId = guestUser.Id,
+                RoleId = guestRoleId
             });
         }
 
@@ -68,7 +77,6 @@ namespace DataAccess
                 }
             });
         }
-
 
         private static void SeedTodoList(ModelBuilder modelBuilder) {
             modelBuilder.Entity<TodoItem>().HasData(new List<TodoItem>()
@@ -119,20 +127,19 @@ namespace DataAccess
             });
         }
 
-        private static User GetAdminUser() {
+        private static User GenerateUser(string id, string userName, string email, string role, string password) {
             var adminUser = new User {
-                Id = UserAdminId,
-                UserName = "Admin",
-                NormalizedUserName = "ADMIN",
-                Email = "Admin@mail.com",
-                NormalizedEmail = "ADMIN@MAIL.COM",
+                Id = id,
+                UserName = userName,
+                NormalizedUserName = userName.ToUpper(),
+                Email = email,
+                NormalizedEmail = email.ToUpper(),
                 EmailConfirmed = false,
-                FullName = "Administrator",
-                SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
-                ConcurrencyStamp = "a9cbee59-a4bf-485b-a215-fc7835066d93",
+                FullName = userName,
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
                 LockoutEnabled = false
             };
-            adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "Admin@12345");
+            adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, password);
             return adminUser;
         }
     }
