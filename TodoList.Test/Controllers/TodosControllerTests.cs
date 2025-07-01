@@ -1,12 +1,17 @@
-﻿using Core.Enums;
+﻿using AutoMapper;
+using Core.Enums;
+using DataAccess;
 using DataAccess.Entities;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using Moq;
 using SendGrid.Helpers.Errors.Model;
 using System.Security.Claims;
 using TodoList.Api.Controllers;
+using TodoList.Api.RequestModel;
+using TodoList.Api.RequestModel.Todo;
 
 namespace TodoList.Test.Controllers
 {
@@ -15,13 +20,20 @@ namespace TodoList.Test.Controllers
     {
         private readonly Mock<ITodoService> _mockTodoService;
         private readonly Mock<ICurrentUserService> _mockCurrentUserService;
+        private readonly IMapper _mapper;
         private readonly TodosController _controller;
 
         public TodosControllerTests()
         {
             _mockTodoService = new Mock<ITodoService>();
             _mockCurrentUserService = new Mock<ICurrentUserService>();
-            _controller = new TodosController(_mockTodoService.Object, _mockCurrentUserService.Object);
+            var config = new MapperConfiguration(e =>
+               e.AddProfiles(new List<Profile> {
+                    new SystemMapping(),
+                    new RequestMappingProfile()
+               }));
+            _mapper = config.CreateMapper();
+            _controller = new TodosController(_mapper, _mockTodoService.Object, _mockCurrentUserService.Object);
 
             // Setup authenticated user by default
             var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
@@ -105,42 +117,47 @@ namespace TodoList.Test.Controllers
         public async Task Create_ShouldReturnCreatedAtAction_WhenSuccessful()
         {
             // Arrange
-            var newTodo = new TodoItem { Title = "New Todo" };
-            var createdTodo = new TodoItem { Id = 1, Title = "New Todo", UserId = "test-user-id" };
+            var createTodoRequest = new TodoRequestModel { Title = "New Todo", Description = "Description", Priority = PriorityLevel.Low, CategoryId = 1, IsCompleted = false };
+            var todoItem = _mapper.Map<TodoItemDto>(createTodoRequest);
+            var todoEntity = _mapper.Map<TodoItem>(todoItem);
 
-            _mockTodoService.Setup(x => x.CreateAsync(newTodo, "test-user-id"))
-                .ReturnsAsync(createdTodo);
+            //var newTodo = new TodoItem { Title = "New Todo", UserId = "test-user-id" };
+            //var createdTodo = new TodoItem { Id = 1, Title = "New Todo", UserId = "test-user-id" };
+
+            _mockTodoService.Setup(x => x.CreateAsync(todoItem))
+                .ReturnsAsync(todoEntity);
 
             // Act
-            var result = await _controller.Create(newTodo);
+            var result = await _controller.Create(createTodoRequest);
 
             // Assert
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
             Assert.Equal(nameof(TodosController.GetById), createdAtActionResult.ActionName);
             Assert.Equal(1, createdAtActionResult.RouteValues["id"]);
             var todo = Assert.IsType<TodoItem>(createdAtActionResult.Value);
-            Assert.Equal(createdTodo.Title, todo.Title);
+            Assert.Equal(todoEntity.Title, todo.Title);
         }
 
         [Fact]
         public async Task Update_ShouldReturnNoContent_WhenSuccessful()
         {
             // Arrange
-            var todo = new TodoItem { Id = 1, Title = "Updated Todo", UserId = "test-user-id" };
+            var todo = new TodoRequestModel { Title = "Updated Todo", Description = "Description" };
+            var todoItem = _mapper.Map<TodoItemDto>(todo);
 
             // Act
             var result = await _controller.Update(1, todo);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
-            _mockTodoService.Verify(x => x.UpdateAsync(todo, "test-user-id"), Times.Once);
+            _mockTodoService.Verify(x => x.UpdateAsync(todoItem), Times.Once);
         }
 
         [Fact]
         public async Task Update_ShouldReturnBadRequest_WhenIdsMismatch()
         {
             // Arrange
-            var todo = new TodoItem { Id = 2, Title = "Updated Todo" };
+            var todo = new TodoRequestModel { Title = "Updated Todo", Description = "Description" };
 
             // Act
             var result = await _controller.Update(1, todo);
@@ -220,7 +237,7 @@ namespace TodoList.Test.Controllers
         public async Task GetAll_ShouldReturnUnauthorized_WhenUserNotAuthenticated()
         {
             // Arrange
-            var unauthenticatedController = new TodosController(_mockTodoService.Object, _mockCurrentUserService.Object)
+            var unauthenticatedController = new TodosController(_mapper, _mockTodoService.Object, _mockCurrentUserService.Object)
             {
                 ControllerContext = new ControllerContext
                 {

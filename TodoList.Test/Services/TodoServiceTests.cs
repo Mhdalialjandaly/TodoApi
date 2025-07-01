@@ -1,24 +1,37 @@
-﻿using Core.Enums;
+﻿using AutoMapper;
+using Core.Enums;
+using DataAccess;
 using DataAccess.Entities;
 using DataAccess.IRepositories;
 using DataAccess.Services;
+using Models;
 using Moq;
 using SendGrid.Helpers.Errors.Model;
+using TodoList.Api.RequestModel;
+using TodoList.Api.RequestModel.Todo;
 
 namespace TodoList.Test.Services
 {
     public class TodoServiceTests
     {
         private readonly Mock<ITodoItemRepository> _mockTodoRepository;
+        private readonly IMapper _mapper;
         private readonly TodoService _todoService;
 
         public TodoServiceTests()
         {
             _mockTodoRepository = new Mock<ITodoItemRepository>();
-            _todoService = new TodoService(_mockTodoRepository.Object);
+            var config = new MapperConfiguration(e =>
+               e.AddProfiles(new List<Profile> {
+                    new SystemMapping(),
+                    new RequestMappingProfile()
+               }));
+            _mapper = config.CreateMapper();
+
+            _todoService = new TodoService(_mapper, _mockTodoRepository.Object);
         }
 
-        [Fact]  
+        [Fact]
         public async Task GetByIdAsync_ShouldThrowException_WhenTodoNotFound()
         {
             // Arrange
@@ -53,19 +66,22 @@ namespace TodoList.Test.Services
         public async Task CreateAsync_ShouldReturnTodo_WhenCreationSuccessful()
         {
             // Arrange
-            var todo = new TodoItem { Title = "Test Todo" };
-            var userId = "user1";
+            var createTodoRequest = new TodoRequestModel { Title = "New Todo", Description = "Description", Priority = PriorityLevel.Low, CategoryId = 1, IsCompleted = false };
+            var todoItem = _mapper.Map<TodoItemDto>(createTodoRequest);
+            todoItem.UserId = Guid.NewGuid().ToString();
+
+            var todoEntity = _mapper.Map<TodoItem>(todoItem);
 
             _mockTodoRepository.Setup(x => x.AddAsync(It.IsAny<TodoItem>()))
-                .ReturnsAsync(todo);
+                .ReturnsAsync(todoEntity);
 
             // Act
-            var result = await _todoService.CreateAsync(todo, userId);
+            var result = await _todoService.CreateAsync(todoItem);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(todo.Title, result.Title);
-            Assert.Equal(userId, result.UserId);
+            Assert.Equal(todoItem.Title, result.Title);
+            Assert.Equal(todoItem.UserId, result.UserId);
         }
 
         [Fact]
