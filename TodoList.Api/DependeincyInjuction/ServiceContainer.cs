@@ -11,7 +11,6 @@ using System.Text;
 using Jose;
 using TodoList.Api.Services.Service;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TodoList.Api.RequestModel;
 
 namespace TodoList.Api.DependeincyInjuction
