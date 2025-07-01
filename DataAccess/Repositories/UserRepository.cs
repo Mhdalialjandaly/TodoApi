@@ -1,5 +1,4 @@
-﻿using Core.Enums;
-using DataAccess.Base;
+﻿using DataAccess.Base;
 using DataAccess.Entities;
 using DataAccess.IRepositories;
 using Microsoft.AspNetCore.Identity;
