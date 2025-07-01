@@ -12,6 +12,7 @@ using Jose;
 using TodoList.Api.Services.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using TodoList.Api.RequestModel;
 
 namespace TodoList.Api.DependeincyInjuction
 {
@@ -20,10 +21,12 @@ namespace TodoList.Api.DependeincyInjuction
         public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration) {
             var configuration1 = new MapperConfiguration(e =>
                e.AddProfiles(new List<Profile> {
-                    new SystemMapping()
+                    new SystemMapping(),
+                    new RequestMappingProfile()
                }));
             services.AddAutoMapper(typeof(Profile).Assembly);
             var mapper = configuration1.CreateMapper();
+            services.AddSingleton(mapper);
 
             // DbContext
             services.AddDbContext<ApiDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default")));

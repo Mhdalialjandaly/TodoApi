@@ -1,5 +1,6 @@
 ﻿using Core.Enums;
 using DataAccess.Entities;
+using Models;
 
 
 namespace DataAccess.Services
@@ -8,8 +9,8 @@ namespace DataAccess.Services
     {
         Task<TodoItem> GetByIdAsync(int id, string userId);
         Task<IEnumerable<TodoItem>> GetAllAsync(string userId);
-        Task<TodoItem> CreateAsync(TodoItem todo, string userId);
-        Task UpdateAsync(TodoItem todo, string userId);
+        Task<TodoItem> CreateAsync(TodoItemDto todo);
+        Task UpdateAsync(TodoItemDto todo);
         Task DeleteAsync(int id, string userId);
         Task ToggleCompleteAsync(int id, string userId);
         Task<IEnumerable<TodoItem>> GetCompletedAsync(string userId);

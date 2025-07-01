@@ -1,8 +1,11 @@
-﻿using Core.Enums;
+﻿using AutoMapper;
+using Core.Enums;
 using DataAccess.Entities;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using TodoList.Api.RequestModel.Todo;
 
 namespace TodoList.Api.Controllers
 {
@@ -11,12 +14,15 @@ namespace TodoList.Api.Controllers
     [Route("api/[controller]")]
     public class TodosController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ITodoService _todoService;
         private readonly ICurrentUserService _currentUserService;
 
         public TodosController(
+            IMapper mapper,
             ITodoService todoService,
             ICurrentUserService currentUserService) {
+            _mapper = mapper;
             _todoService = todoService;
             _currentUserService = currentUserService;
         }
@@ -42,19 +48,21 @@ namespace TodoList.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TodoItem todo) {
-            var userId = _currentUserService.UserId;
-            var createdTodo = await _todoService.CreateAsync(todo, userId);
+        public async Task<IActionResult> Create([FromBody] TodoRequestModel todo) {
+            var todoItem = _mapper.Map<TodoItemDto>(todo);
+            todoItem.UserId = _currentUserService.UserId;
+
+            var createdTodo = await _todoService.CreateAsync(todoItem);
             return CreatedAtAction(nameof(GetById), new { id = createdTodo.Id }, createdTodo);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TodoItem todo) {
-            if (id != todo.Id)
-                return BadRequest();
+        public async Task<IActionResult> Update(int id, [FromBody] TodoRequestModel todo) {
+            var todoItem = _mapper.Map<TodoItemDto>(todo);
+            todoItem.Id = id;
+            todoItem.UserId = _currentUserService.UserId;
 
-            var userId = _currentUserService.UserId;
-            await _todoService.UpdateAsync(todo, userId);
+            await _todoService.UpdateAsync(todoItem);
             return NoContent();
         }
 
