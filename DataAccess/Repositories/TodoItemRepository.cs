@@ -18,6 +18,14 @@ namespace DataAccess.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<TodoItem>> GetByUserIdAsync(string userId, int pageNumber, int pageSize) {
+            return await _context.TodoItems
+                .Where(t => t.UserId == userId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<TodoItem>> GetCompletedTodosAsync(string userId)
         {
             return await _context.TodoItems

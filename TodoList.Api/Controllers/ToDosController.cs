@@ -28,16 +28,10 @@ namespace TodoList.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() {
+        public async Task<IActionResult> GetAll(int pageNumber, int pageSize) {
             var userId = _currentUserService.UserId;
-            var todos = await _todoService.GetAllAsync(userId);
+            var todos = await _todoService.GetAllAsync(userId, pageNumber, pageSize);
             return Ok(todos);
-        }
-
-        [HttpGet("Test")]
-        [AllowAnonymous]
-        public IActionResult Test() {
-            return Ok("Api is running");
         }
 
         [HttpGet("{id}")]
