@@ -48,7 +48,7 @@ namespace TodoList.Api.Services.Service
             {
                 Email = request.Email,
                 UserName = request.UserName ?? request.Email, // Default to email if username is null
-                FullName = request.FirstName
+                FullName = request.FirstName + " " + request.LastName,
             };
 
             try
@@ -132,6 +132,7 @@ namespace TodoList.Api.Services.Service
                 Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FullName,
+                LastName = user.FullName,
                 Role = userRoles
             };
         }
