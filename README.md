@@ -70,6 +70,7 @@ dotnet restore
 
 # تطبيق الهجرات
 dotnet ef database update
+add-migration initial 
 
 # تشغيل التطبيق
 dotnet run
@@ -81,35 +82,43 @@ docker-compose up --build
 text
 POST /api/auth/register
 {
-  "email": "user@example.com",
-  "password": "P@ssw0rd123!",
-  "confirmPassword": "P@ssw0rd123!",
+  "email": "Admin@email2.com",
+  "password": "Admin@123456",
+  "confirmPassword": "Admin@123456",
   "firstName": "John",
   "lastName": "Doe",
-  "role": "Guest"
+  "role": "owner"
 }
 2. تسجيل الدخول:
 text
 POST /api/auth/login
 {
-  "email": "user@example.com",
-  "password": "P@ssw0rd123!"
+  "email": "Admin@email2.com",
+  "password": "Admin@123456"
 }
-3. إنشاء مهمة جديدة:
+الافتراضي :
+
+POST /api/auth/login
+{
+  "email": "Admin@email.com",
+  "password": "Admin@12345"
+}
+
+4. إنشاء مهمة جديدة:
 text
 POST /api/todos
 Authorization: Bearer {token}
 {
   "title": "اجتماع فريق العمل",
   "description": "مناقشة متطلبات المشروع القادم",
-  "priority": "High",
+  "priority": "3",
   "categoryId": 1
 }
 وثائق API 📚
 يمكنك الوصول إلى وثائق API التفاعلية عبر Swagger UI بعد تشغيل التطبيق:
 
 text
-http://localhost:5000/swagger
+api url : http://localhost:53874/swagger/index.html
 الاختبارات 🧪
 لتشغيل الاختبارات:
 
@@ -118,15 +127,4 @@ dotnet test
 نماذج الاختبار مع Postman
 يمكنك استيراد مجموعة Postman الجاهزة من مجلد /postman في المستودع.
 
-المساهمة 🤝
-ترحب المساهمات! يرجى اتباع الخطوات التالية:
 
-عمل Fork للمشروع
-
-إنشاء فرع جديد (git checkout -b feature/AmazingFeature)
-
-عمل Commit للتغييرات (git commit -m 'Add some AmazingFeature')
-
-Push إلى الفرع (git push origin feature/AmazingFeature)
-
-فتح طلب دمج (Pull Request)
