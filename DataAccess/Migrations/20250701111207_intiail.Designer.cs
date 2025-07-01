@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20250629195536_SeedDefaultTodoLists")]
-    partial class SeedDefaultTodoLists
+    [Migration("20250701111207_intiail")]
+    partial class intiail
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,14 +34,12 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Color")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeletedBy")
@@ -54,11 +52,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -104,11 +100,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Token")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -133,7 +127,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeletedBy")
@@ -143,7 +136,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsCompleted")
@@ -153,7 +145,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Priority")
@@ -168,7 +159,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -244,7 +234,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -269,9 +258,6 @@ namespace DataAccess.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -307,9 +293,8 @@ namespace DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGgVpaiWy52ATqd96Ht1jw2hIiK1O13UC7Gso/22+u7MPsrrUBq8YDSnVzMrB5/8ZA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBAVKEFSaanZFtrHcV+bEYmznbqiXEXRiAaAxUpJX4dtPwjB5XsZgzt+DoIZI0/BIw==",
                             PhoneNumberConfirmed = false,
-                            Role = 0,
                             SecurityStamp = "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
@@ -474,9 +459,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -491,9 +474,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("DataAccess.Entities.User", "User")
                         .WithMany("TodoItems")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 

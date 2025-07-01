@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class intiail : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,8 +32,7 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -58,12 +59,12 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -184,8 +185,8 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsRevoked = table.Column<bool>(type: "bit", nullable: false)
@@ -197,8 +198,7 @@ namespace DataAccess.Migrations
                         name: "FK_RefreshTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -208,15 +208,15 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -228,14 +228,51 @@ namespace DataAccess.Migrations
                         name: "FK_TodoItems_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TodoItems_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "149b2f7f-8358-4f68-be8e-e17eddb9f025", null, "Owner", "OWNER" },
+                    { "169b2f7f-8358-4f68-be8e-e17eddb9f027", null, "Guest", "GUEST" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "51586e47-b125-4534-bba4-9bc6fd3dfbc8", 0, "a9cbee59-a4bf-485b-a215-fc7835066d93", "Admin@mail.com", false, "Administrator", false, null, "ADMIN@MAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEBAVKEFSaanZFtrHcV+bEYmznbqiXEXRiAaAxUpJX4dtPwjB5XsZgzt+DoIZI0/BIw==", null, false, "R5KYJ6YWCF5JOO3OKYALJ7BICHJU5LAB", false, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Color", "Created", "CreatedBy", "DeletedBy", "DeletedDate", "LastModified", "LastModifiedBy", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Red", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, null, null, "", "Category A" },
+                    { 2, "Blue", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, null, null, "", "Category B" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "149b2f7f-8358-4f68-be8e-e17eddb9f025", "51586e47-b125-4534-bba4-9bc6fd3dfbc8" });
+
+            migrationBuilder.InsertData(
+                table: "TodoItems",
+                columns: new[] { "Id", "CategoryId", "Created", "CreatedBy", "DeletedBy", "DeletedDate", "Description", "IsCompleted", "LastModified", "LastModifiedBy", "Priority", "Title", "UpdatedAt", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, null, "Todo #1 Description", false, null, "", 3, "Todo #1", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "51586e47-b125-4534-bba4-9bc6fd3dfbc8" },
+                    { 2, 1, new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, null, "Todo #2 Description", false, null, "", 0, "Todo #2", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "51586e47-b125-4534-bba4-9bc6fd3dfbc8" },
+                    { 3, 2, new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, null, "Todo #3 Description", false, null, "", 1, "Todo #3", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "51586e47-b125-4534-bba4-9bc6fd3dfbc8" }
                 });
 
             migrationBuilder.CreateIndex(
