@@ -15,6 +15,12 @@ namespace TodoList.Api.Services.Service
         private readonly ITokenService _tokenService;
         private readonly SignInManager<User> _signInManager;
         private readonly ApiDbContext _context;
+        private UserManager<User> object1;
+        private ApiDbContext object2;
+        private SignInManager<User> object3;
+        private RoleManager<IdentityRole> object4;
+        private global::Microsoft.Extensions.Configuration.IConfiguration object5;
+        private ITokenService object6;
 
         public AuthService(
             UserManager<User> userManager,
@@ -30,6 +36,8 @@ namespace TodoList.Api.Services.Service
             _context = context;
             _signInManager = signInManager;
         }
+
+       
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request) {
             var existingUser = await _userManager.FindByEmailAsync(request.Email);
