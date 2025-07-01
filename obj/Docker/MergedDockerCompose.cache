@@ -1,0 +1,76 @@
+name: dockercompose7943194199991917585
+services:
+  sqlserver:
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: Admin@123
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:1433
+      timeout: 3m0s
+      interval: 3m0s
+      retries: 3
+      start_period: 3m0s
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      voc_private_network: null
+    ports:
+      - mode: ingress
+        target: 1433
+        published: "1433"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: sql_data
+        target: /var/opt/mssql
+        volume: {}
+  todolist.api:
+    build:
+      context: C:\Users\Administrator\source\repos\TodoList.Api
+      dockerfile: TodoList.Api/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
+        required: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_HTTPS_PORTS: "8081"
+    image: todolistapi
+    networks:
+      voc_private_network: null
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "53874"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        protocol: tcp
+      - mode: ingress
+        target: 8081
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: C:\Users\Administrator\AppData\Roaming/Microsoft/UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Administrator\AppData\Roaming/ASP.NET/Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+networks:
+  voc_private_network:
+    name: dockercompose7943194199991917585_voc_private_network
+    driver: bridge
+volumes:
+  sql_data:
+    name: dockercompose7943194199991917585_sql_data

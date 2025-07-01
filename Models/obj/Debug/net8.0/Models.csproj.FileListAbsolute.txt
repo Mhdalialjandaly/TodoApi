@@ -1,0 +1,16 @@
+C:\Users\Administrator\source\repos\TodoList.Api\Models\bin\Debug\net8.0\Models.deps.json
+C:\Users\Administrator\source\repos\TodoList.Api\Models\bin\Debug\net8.0\Models.dll
+C:\Users\Administrator\source\repos\TodoList.Api\Models\bin\Debug\net8.0\Models.pdb
+C:\Users\Administrator\source\repos\TodoList.Api\Models\bin\Debug\net8.0\Core.dll
+C:\Users\Administrator\source\repos\TodoList.Api\Models\bin\Debug\net8.0\Core.pdb
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.csproj.AssemblyReference.cache
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.AssemblyInfoInputs.cache
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.AssemblyInfo.cs
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.csproj.Up2Date
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.dll
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\refint\Models.dll
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.pdb
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\ref\Models.dll
+C:\Users\Administrator\source\repos\TodoList.Api\Models\obj\Debug\net8.0\Models.sourcelink.json
