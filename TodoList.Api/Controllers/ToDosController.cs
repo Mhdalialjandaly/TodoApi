@@ -28,9 +28,9 @@ namespace TodoList.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(int pageNumber, int pageSize) {
+        public async Task<IActionResult> GetAll(int pageNumber, int pageSize, string searchTerm = null) {
             var userId = _currentUserService.UserId;
-            var todos = await _todoService.GetAllAsync(userId, pageNumber, pageSize);
+            var todos = await _todoService.GetAllAsync(userId, pageNumber, pageSize, searchTerm);
             return Ok(todos);
         }
 
@@ -61,6 +61,7 @@ namespace TodoList.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Delete(int id) {
             var userId = _currentUserService.UserId;
             await _todoService.DeleteAsync(id, userId);

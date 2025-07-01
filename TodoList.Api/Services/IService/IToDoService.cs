@@ -1,6 +1,7 @@
 ﻿using Core.Enums;
 using DataAccess.Entities;
 using Models;
+using Models.Base;
 
 
 namespace DataAccess.Services
@@ -9,7 +10,7 @@ namespace DataAccess.Services
     {
         Task<TodoItem> GetByIdAsync(int id, string userId);
         Task<IEnumerable<TodoItem>> GetAllAsync(string userId);
-        Task<IEnumerable<TodoItem>> GetAllAsync(string userId, int pagingNumber, int pageSize);
+        Task<PagedResult<TodoItem>> GetAllAsync(string userId, int pageNumber, int pageSize, string searchTerm = null);
         Task<TodoItem> CreateAsync(TodoItemDto todo);
         Task UpdateAsync(TodoItemDto todo);
         Task DeleteAsync(int id, string userId);
