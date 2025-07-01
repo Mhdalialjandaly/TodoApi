@@ -29,6 +29,10 @@ namespace DataAccess.Services
             return await _todoRepository.GetByUserIdAsync(userId);
         }
 
+        public async Task<IEnumerable<TodoItem>> GetAllAsync(string userId, int pageNumber, int pageSize) {
+            return await _todoRepository.GetByUserIdAsync(userId, pageNumber, pageSize);
+        }
+
         public async Task<TodoItem> CreateAsync(TodoItemDto todo) {
             var dbItem = _mapper.Map<TodoItem>(todo);
             dbItem.Created = DateTime.Now;
